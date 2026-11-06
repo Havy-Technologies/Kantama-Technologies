@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kantama Technologies — Make Your Brand Impossible To Scroll Past</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Plus+Jakarta+Sans:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFFDF7;
+      --ink: #12111A;
+      --violet: #682AE9;
+      --pink: #FF338B;
+      --lime: #CCFF00;
+      --cyan: #00F0FF;
+      --yellow: #FFE600;
+      --border: 3px solid var(--ink);
+      --shadow: 6px 6px 0px var(--ink);
+      --shadow-lg: 10px 10px 0px var(--ink);
+      --shadow-sm: 4px 4px 0px var(--ink);
+      --radius: 28px;
+      --radius-sm: 16px;
+      --font-display: 'Syne', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    body {
+      overflow-x: hidden;
+      position: relative;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle noise overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Keyboard Accessibility Focus */
+    *:focus-visible {
+      outline: 4px dashed var(--pink);
+      outline-offset: 4px;
+    }
+
+    /* Custom Cursor (Desktop Only) */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      background: var(--lime);
+      border: 2.5px solid var(--ink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.2s ease;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink);
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    .custom-cursor span {
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .custom-cursor.is-active {
+      width: 78px;
+      height: 78px;
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .custom-cursor.is-active span {
+      opacity: 1;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .custom-cursor {
+        display: flex;
+      }
+    }
+
+    /* Typography Helpers */
+    h1, h2, h3, .display-font {
+      font-family: var(--font-display);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+    }
+
+    .serif-italic {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 12px;
+      z-index: 1000;
+      padding: 0 12px;
+    }
+
+    .nav-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .navbar {
+      background: rgba(255, 253, 247, 0.95);
+      backdrop-filter: blur(10px);
+      border: var(--border);
+      border-radius: 999px;
+      padding: 10px 14px 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      gap: 8px;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(0.92rem, 3.5vw, 1.35rem);
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
+    .logo-badge {
+      background: var(--violet);
+      color: var(--lime);
+      border: 2px solid var(--ink);
+      padding: 2px 7px;
+      border-radius: 8px;
+      transform: rotate(-3deg);
+      display: inline-block;
+      font-size: clamp(0.62rem, 2.3vw, 0.92rem);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--violet);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-cta {
+      display: none;
+      background: var(--lime);
+      color: var(--ink);
+      font-weight: 800;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2.5px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      font-size: 0.9rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0px var(--ink);
+    }
+
+    /* Mobile Menu Toggle Button */
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--lime);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 2.5px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .menu-toggle[aria-expanded="true"] {
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .menu-toggle-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* Mobile Navigation Drawer */
+    .mobile-nav-drawer {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border: var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-lg);
+      padding: 18px;
+      z-index: 999;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mobile-nav-drawer.is-open {
+      display: flex;
+      animation: drawerPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes drawerPop {
+      from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .mobile-nav-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mobile-nav-list a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      background: #fff;
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: 3px 3px 0px var(--ink);
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .mobile-nav-list a:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px var(--ink);
+    }
+
+    .mobile-drawer-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--lime);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: 2.5px solid var(--ink);
+      box-shadow: 4px 4px 0px var(--ink);
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    @media (min-width: 860px) {
+      header {
+        top: 16px;
+        padding: 0 16px;
+      }
+      .navbar {
+        padding: 12px 22px;
+      }
+      .logo {
+        gap: 8px;
+      }
+      .logo-badge {
+        padding: 2px 9px;
+        border-radius: 10px;
+        transform: rotate(-5deg);
+      }
+      .nav-links {
+        display: flex;
+      }
+      .nav-cta {
+        display: inline-block;
+      }
+      .menu-toggle,
+      .mobile-nav-drawer {
+        display: none !important;
+      }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 16px 30px;
+      border-radius: 999px;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: translate(3px, 3px) !important;
+      box-shadow: 2px 2px 0px var(--ink) !important;
+    }
+
+    .btn-primary {
+      background: var(--lime);
+      color: var(--ink);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .btn-pink {
+      background: var(--pink);
+      color: #fff;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      padding: 52px 0 80px;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .eyebrow-sticker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--yellow);
+      border: 2.5px solid var(--ink);
+      box-shadow: 4px 4px 0px var(--ink);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: clamp(0.74rem, 2.5vw, 0.85rem);
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.35rem, 8vw, 6.3rem);
+      text-transform: uppercase;
+      line-height: 0.96;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .pop-word {
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.6) translateY(35px) rotate(4deg);
+      animation: wordBounce 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes wordBounce {
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotate(0deg);
+      }
+    }
+
+    .highlight-pill {
+      background: var(--violet);
+      color: #fff;
+      padding: 0 16px 5px;
+      border-radius: 999px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      display: inline-block;
+      transform: rotate(-2deg);
+    }
+
+    .highlight-lime {
+      background: var(--lime);
+      color: var(--ink);
+      padding: 2px 14px;
+      border-radius: 20px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      display: inline-block;
+      transform: rotate(2deg);
+    }
+
+    .underline-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .underline-svg {
+      position: absolute;
+      bottom: -14px;
+      left: 0;
+      width: 100%;
+      height: 18px;
+      pointer-events: none;
+    }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+      max-width: 660px;
+      margin: 0 auto 36px;
+      font-weight: 700;
+      color: #2c2a35;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* Floating Hero Stickers */
+    .sticker {
+      position: absolute;
+      z-index: 3;
+      user-select: none;
+      pointer-events: none;
+      font-family: var(--font-display);
+      font-weight: 800;
+      border: 2.5px solid var(--ink);
+      box-shadow: 4px 4px 0px var(--ink);
+      animation: floatSticker 4s ease-in-out infinite alternate;
+    }
+
+    .sticker-1 {
+      top: 6%;
+      left: 4%;
+      background: var(--pink);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 16px;
+      transform: rotate(-12deg);
+      font-size: 0.85rem;
+    }
+
+    .sticker-2 {
+      top: 14%;
+      right: 4%;
+      background: var(--cyan);
+      color: var(--ink);
+      padding: 12px 18px;
+      border-radius: 999px;
+      transform: rotate(9deg);
+      font-size: 0.9rem;
+      animation-delay: -1.5s;
+    }
+
+    .sticker-3 {
+      bottom: 8%;
+      left: 7%;
+      background: var(--lime);
+      color: var(--ink);
+      padding: 8px 14px;
+      border-radius: 12px;
+      transform: rotate(7deg);
+      font-size: 0.8rem;
+      animation-delay: -2.5s;
+    }
+
+    .sticker-star {
+      position: absolute;
+      right: 9%;
+      bottom: 12%;
+      width: 56px;
+      height: 56px;
+      animation: spinSlow 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatSticker {
+      0% { transform: translateY(0px) rotate(-8deg); }
+      100% { transform: translateY(-14px) rotate(6deg); }
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .sticker-1, .sticker-2, .sticker-3 {
+        display: none;
+      }
+      .sticker-star {
+        width: 40px;
+        height: 40px;
+        right: 4%;
+        bottom: 2%;
+      }
+    }
+
+    /* MARQUEE STRIP */
+    .marquee-wrap {
+      background: var(--ink);
+      color: var(--lime);
+      border-top: var(--border);
+      border-bottom: var(--border);
+      padding: 16px 0;
+      overflow: hidden;
+      transform: rotate(-1.2deg) scale(1.02);
+      margin: 12px 0 64px;
+      box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: scrollMarquee 22s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      white-space: nowrap;
+    }
+
+    .marquee-dot {
+      color: var(--pink);
+      font-size: 1.8rem;
+    }
+
+    @keyframes scrollMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: var(--pink);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      margin-bottom: 14px;
+      transform: rotate(-3deg);
+    }
+
+    .section-title {
+      font-size: clamp(2.1rem, 5.5vw, 4rem);
+      text-transform: uppercase;
+    }
+
+    /* SERVICES SECTION */
+    .services-section {
+      padding: 40px 0 90px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    @media (min-width: 900px) {
+      .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .service-card {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 32px 26px;
+      box-shadow: var(--shadow);
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .service-card.card-violet { background: #F3ECFF; }
+    .service-card.card-pink { background: #FFEAF3; }
+    .service-card.card-lime { background: #F4FFD6; }
+
+    .service-card:hover,
+    .service-card.is-open {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 22px;
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      background: #fff;
+    }
+
+    .flip-pill {
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .service-card:hover .flip-pill,
+    .service-card.is-open .flip-pill {
+      background: var(--pink);
+      transform: rotate(4deg);
+    }
+
+    .service-title {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .service-teaser {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #363342;
+      margin-bottom: 16px;
+    }
+
+    /* Expandable Drawer inside Card */
+    .service-drawer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-top 0.3s ease;
+      border-top: 2px dashed transparent;
+    }
+
+    .service-card:hover .service-drawer,
+    .service-card.is-open .service-drawer,
+    .service-card:focus-within .service-drawer {
+      max-height: 320px;
+      opacity: 1;
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top-color: var(--ink);
+    }
+
+    .perk-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .perk-list li {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .perk-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--violet);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .vibe-badge {
+      display: inline-block;
+      background: var(--lime);
+      border: 2px solid var(--ink);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      box-shadow: 2px 2px 0px var(--ink);
+    }
+
+    /* WORK SECTION (Web Mockups with Live Hero Section Previews) */
+    .work-section {
+      padding: 60px 0 90px;
+    }
+
+    .web-subheading {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .web-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 820px) {
+      .web-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .browser-card {
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      background: #fff;
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .browser-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .browser-bar {
+      background: var(--ink);
+      color: #fff;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: var(--border);
+      gap: 12px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .browser-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1.5px solid #000;
+    }
+
+    .browser-url {
+      background: #2b2938;
+      color: var(--lime);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Live Hero Section Viewport */
+    .hero-viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #0d0c12;
+      overflow: hidden;
+      border-bottom: var(--border);
+    }
+
+    /* Styled Fallback Hero Backdrop behind live iframe */
+    .hero-fallback {
+      position: absolute;
+      inset: 0;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      z-index: 1;
+    }
+
+    .fallback-bizsouls {
+      background: linear-gradient(135deg, #CCFF00 0%, #00F0FF 100%);
+      color: var(--ink);
+    }
+
+    .fallback-urbanspice {
+      background: linear-gradient(135deg, #241610 0%, #3d2419 100%);
+      color: #F8F3EA;
+    }
+
+    .fallback-havy {
+      background: linear-gradient(135deg, #07090E 0%, #151C2C 100%);
+      color: #F8FAFC;
+    }
+
+    .fallback-decoder {
+      background: linear-gradient(135deg, #682AE9 0%, #FF338B 100%);
+      color: #FFFFFF;
+    }
+
+    .fallback-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.25);
+      margin-bottom: 10px;
+    }
+
+    .fallback-bizsouls .fallback-eyebrow {
+      background: var(--ink);
+      color: var(--lime);
+    }
+
+    .fallback-heading {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .fallback-sub {
+      font-size: 0.85rem;
+      opacity: 0.88;
+      max-width: 90%;
+      font-weight: 600;
+    }
+
+    /* Scaled Desktop Iframe to showcase full Hero Section */
+    .hero-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      transform: scale(0.5);
+      transform-origin: top left;
+      border: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: transparent;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .browser-card:hover .hero-iframe {
+      transform: scale(0.515);
+    }
+
+    .hero-live-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 3;
+      background: rgba(18, 17, 26, 0.85);
+      color: var(--lime);
+      border: 2px solid var(--lime);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-open-pill {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 3;
+      background: var(--lime);
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      transition: background-color 0.2s, color 0.2s, transform 0.2s;
+    }
+
+    .browser-card:hover .hero-open-pill {
+      background: var(--pink);
+      color: #fff;
+      transform: translate(-2px, -2px);
+    }
+
+    /* Card Bottom Info Area */
+    .browser-info {
+      padding: 24px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      flex-grow: 1;
+      background: #fff;
+    }
+
+    .info-bizsouls { background: #F4FFD6; }
+    .info-urbanspice { background: #FFF5E6; }
+    .info-havy { background: #ECFEFF; }
+    .info-decoder { background: #F3ECFF; }
+
+    .mockup-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .mockup-pill {
+      background: #fff;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+      box-shadow: 3px 3px 0px var(--ink);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .mockup-title {
+      font-size: 1.85rem;
+      margin: 4px 0 4px;
+      text-transform: uppercase;
+    }
+
+    .mockup-stat {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #2c2a35;
+    }
+
+    /* DARK SECTION: RESULTS + HOW IT WORKS */
+    .dark-zone {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 96px 0;
+      border-top: var(--border);
+      border-bottom: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 24px;
+      margin-bottom: 90px;
+    }
+
+    @media (min-width: 640px) {
+      .results-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 960px) {
+      .results-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: #1E1C29;
+      border: 3px solid #fff;
+      border-radius: var(--radius);
+      padding: 28px 22px;
+      box-shadow: 6px 6px 0px var(--violet);
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-card:nth-child(2) { box-shadow: 6px 6px 0px var(--pink); transform: rotate(1.5deg); }
+    .stat-card:nth-child(3) { box-shadow: 6px 6px 0px var(--lime); transform: rotate(-1.5deg); }
+    .stat-card:nth-child(4) { box-shadow: 6px 6px 0px var(--cyan); }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+      color: var(--lime);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .stat-card:nth-child(2) .stat-number { color: var(--pink); }
+    .stat-card:nth-child(4) .stat-number { color: var(--cyan); }
+
+    .stat-label {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #EAE6F8;
+    }
+
+    /* HOW IT WORKS (3 Simple Cards) */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    @media (min-width: 840px) {
+      .steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .step-card {
+      background: var(--bg);
+      color: var(--ink);
+      border: 3px solid #fff;
+      border-radius: var(--radius);
+      padding: 32px 26px;
+      box-shadow: 8px 8px 0px var(--pink);
+      position: relative;
+    }
+
+    .step-card:nth-child(2) {
+      box-shadow: 8px 8px 0px var(--lime);
+    }
+
+    .step-card:nth-child(3) {
+      box-shadow: 8px 8px 0px var(--cyan);
+    }
+
+    .step-sticker {
+      display: inline-block;
+      background: var(--violet);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: 2px solid var(--ink);
+      margin-bottom: 18px;
+      transform: rotate(-4deg);
+    }
+
+    .step-card h3 {
+      font-size: 1.75rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .step-card p {
+      font-weight: 700;
+      color: #363342;
+    }
+
+    /* TESTIMONIALS (Chat-Bubble Carousel) */
+    .testimonials-section {
+      padding: 90px 0 60px;
+    }
+
+    .carousel-Header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+
+    .carousel-controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    .carousel-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: var(--border);
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+
+    .carousel-btn:hover {
+      background: var(--lime);
+      transform: translate(-2px, -2px);
+    }
+
+    .chat-carousel {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 12px 6px 28px;
+      scrollbar-width: none;
+    }
+
+    .chat-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .chat-card {
+      flex: 0 0 88%;
+      scroll-snap-align: start;
+      background: #fff;
+      border: var(--border);
+      border-radius: 28px 28px 28px 6px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    @media (min-width: 680px) {
+      .chat-card {
+        flex: 0 0 420px;
+      }
+    }
+
+    .chat-card:nth-child(even) {
+      background: #F4FFD6;
+      border-radius: 28px 28px 6px 28px;
+    }
+
+    .chat-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--violet);
+      text-transform: uppercase;
+    }
+
+    .chat-quote {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.45;
+    }
+
+    .chat-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2.5px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 800;
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .author-info strong {
+      display: block;
+      font-weight: 800;
+    }
+
+    .author-info span {
+      font-size: 0.85rem;
+      color: #555;
+      font-weight: 700;
+    }
+
+    /* FAQ SECTION */
+    .faq-section {
+      padding: 50px 0 90px;
+    }
+
+    .faq-list {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: #fff;
+      border: var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: background-color 0.2s ease;
+    }
+
+    .faq-item.is-open {
+      background: #FFF9DB;
+      box-shadow: var(--shadow);
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 22px 24px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    .faq-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2.5px solid var(--ink);
+      background: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s;
+    }
+
+    .faq-item.is-open .faq-icon {
+      transform: rotate(45deg);
+      background: var(--pink);
+      color: #fff;
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .faq-content-inner {
+      padding: 0 24px 22px;
+      font-weight: 700;
+      color: #32303d;
+    }
+
+    /* CONTACT SECTION */
+    .contact-section {
+      padding: 40px 0 100px;
+    }
+
+    .contact-box {
+      background: var(--violet);
+      color: #fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 36px 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    @media (min-width: 900px) {
+      .contact-box {
+        grid-template-columns: 1fr 1.1fr;
+        padding: 56px;
+      }
+    }
+
+    .quick-tap-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .quick-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-radius: 18px;
+      border: var(--border);
+      box-shadow: var(--shadow-sm);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(0.92rem, 2.5vw, 1.05rem);
+      text-decoration: none;
+      color: var(--ink);
+      transition: transform 0.15s ease;
+      gap: 10px;
+    }
+
+    .quick-btn:hover {
+      transform: translate(-3px, -3px);
+    }
+
+    .btn-wa {
+      background: #25D366;
+    }
+
+    .btn-ig {
+      background: var(--yellow);
+    }
+
+    .contact-form {
+      background: var(--bg);
+      color: var(--ink);
+      border: var(--border);
+      border-radius: 22px;
+      padding: 24px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    @media (min-width: 600px) {
+      .contact-form {
+        padding: 28px;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2.5px solid var(--ink);
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1rem;
+      background: #fff;
+    }
+
+    .vibe-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .vibe-chip {
+      cursor: pointer;
+    }
+
+    .vibe-chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .vibe-chip span {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 2.5px solid var(--ink);
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.84rem;
+      background: #fff;
+      transition: background-color 0.15s, transform 0.15s;
+    }
+
+    .vibe-chip input:checked + span {
+      background: var(--pink);
+      color: #fff;
+      box-shadow: 3px 3px 0px var(--ink);
+      transform: translate(-2px, -2px);
+    }
+
+    .vibe-chip input:focus-visible + span {
+      outline: 3px dashed var(--violet);
+      outline-offset: 2px;
+    }
+
+    .form-feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--lime);
+      border: 2px solid var(--ink);
+      border-radius: 12px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 64px 0 40px;
+      border-top: var(--border);
+      overflow: hidden;
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .social-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .social-pill {
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 2.5px solid var(--lime);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .social-pill:hover {
+      background: var(--lime);
+      transform: translateY(-3px);
+    }
+
+    /* Fixed Responsive Giant Footer Wordmark — Never Clips on Mobile */
+    .footer-giant {
+      width: 100%;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 11.2vw, 10.2rem);
+      line-height: 0.95;
+      text-align: center;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin: 12px auto 28px;
+      padding: 0 4px;
+      white-space: nowrap;
+      user-select: none;
+      display: block;
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      font-weight: 700;
+      border-top: 1px solid #333;
+      padding-top: 24px;
+    }
+
+    /* Scroll Reveal Utility */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Reduced Motion Preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .pop-word, .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .custom-cursor {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Grain texture overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="customCursor" aria-hidden="true">
+    <span id="cursorText">GO</span>
+  </div>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-wrapper">
+      <nav class="navbar" aria-label="Main Navigation">
+        <a href="#" class="logo" data-cursor="HOME">
+          <span>KANTAMA</span>
+          <span class="logo-badge">TECHNOLOGIES</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#services" data-cursor="PEEK">Services</a></li>
+          <li><a href="#work" data-cursor="EXPLORE">Work</a></li>
+          <li><a href="#results" data-cursor="STATS">Receipts</a></li>
+          <li><a href="#faq" data-cursor="ASK">FAQ</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="#contact" class="nav-cta magnetic" data-cursor="LET'S GO">Drop a DM ✦</a>
+          <button type="button" class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileNavDrawer" aria-label="Toggle navigation menu">
+            <span id="menuToggleText">Menu</span>
+            <span class="menu-toggle-icon" id="menuToggleIcon">☰</span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Dropdown Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-label="Mobile Navigation">
+        <ul class="mobile-nav-list">
+          <li><a href="#services" class="mobile-nav-link"><span>Services</span> <span>💻</span></a></li>
+          <li><a href="#work" class="mobile-nav-link"><span>Live Work</span> <span>🌐</span></a></li>
+          <li><a href="#results" class="mobile-nav-link"><span>Receipts</span> <span>📈</span></a></li>
+          <li><a href="#faq" class="mobile-nav-link"><span>FAQ</span> <span>❓</span></a></li>
+        </ul>
+        <a href="#contact" class="mobile-drawer-cta mobile-nav-link">Drop a DM on WhatsApp ✦</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO SECTION -->
+    <section class="hero">
+      <!-- Floating Decorative Stickers -->
+      <div class="sticker sticker-1" aria-hidden="true">NO BORING TEMPLATES 🚫</div>
+      <div class="sticker sticker-2" aria-hidden="true">100% SCROLL-STOPPING ⚡</div>
+      <div class="sticker sticker-3" aria-hidden="true">GEN-Z BUILT ★</div>
+      <svg class="sticker-star" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 0 L63 37 L100 50 L63 63 L50 100 L37 63 L0 50 L37 37 Z" fill="#FF338B" stroke="#12111A" stroke-width="5"/>
+      </svg>
+
+      <div class="container hero-inner">
+        <div class="eyebrow-sticker">
+          <span>🔥 Web Studio & Growth Engine for Modern Brands</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="pop-word" style="animation-delay: 0.05s;">WE</span>
+          <span class="pop-word" style="animation-delay: 0.12s;">MAKE</span>
+          <span class="pop-word" style="animation-delay: 0.19s;">YOUR</span>
+          <span class="pop-word highlight-pill" style="animation-delay: 0.26s;">BRAND</span>
+          <br>
+          <span class="pop-word highlight-lime" style="animation-delay: 0.34s;">IMPOSSIBLE</span>
+          <span class="pop-word" style="animation-delay: 0.41s;">TO</span>
+          <span class="pop-word underline-wrap" style="animation-delay: 0.48s;">
+            SCROLL
+            <svg class="underline-svg" viewBox="0 0 300 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 18C72 4 220 2 296 19" stroke="#FF338B" stroke-width="8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="pop-word serif-italic" style="animation-delay: 0.55s; font-size: 1.12em;">past.</span>
+        </h1>
+
+        <p class="hero-sub">
+          High-converting custom websites, interactive brand experiences, and organic + paid scaling that turns casual visitors into superfans.
+        </p>
+
+        <div class="hero-btns">
+          <a href="#contact" class="btn btn-primary magnetic" data-cursor="BUILD">
+            Let's build 🚀
+          </a>
+          <a href="#work" class="btn btn-secondary magnetic" data-cursor="EXPLORE">
+            Explore live sites ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCROLLING MARQUEE STRIP -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-item">Websites <span class="marquee-dot">•</span> UI/UX Design <span class="marquee-dot">•</span> Growth <span class="marquee-dot">•</span> Landing Pages <span class="marquee-dot">•</span> Custom Code <span class="marquee-dot">•</span> Paid Ads <span class="marquee-dot">•</span> SEO</div>
+        <div class="marquee-item">Websites <span class="marquee-dot">•</span> UI/UX Design <span class="marquee-dot">•</span> Growth <span class="marquee-dot">•</span> Landing Pages <span class="marquee-dot">•</span> Custom Code <span class="marquee-dot">•</span> Paid Ads <span class="marquee-dot">•</span> SEO</div>
+      </div>
+    </div>
+
+    <!-- 2. SERVICES SECTION -->
+    <section class="services-section container" id="services">
+      <div class="section-header reveal">
+        <span class="section-tag">What We Cook</span>
+        <h2 class="section-title">Three ways we blow up your <span class="serif-italic">numbers.</span></h2>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <article class="service-card card-violet tilt-card reveal" tabindex="0" role="button" aria-expanded="false" data-cursor="TAP / HOVER">
+          <div>
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">💻</div>
+              <span class="flip-pill">Tap to unpack +</span>
+            </div>
+            <h3 class="service-title">Website Dev</h3>
+            <p class="service-teaser">Sites that look like an art gallery and convert like a vending machine.</p>
+          </div>
+
+          <div class="service-drawer">
+            <ul class="perk-list">
+              <li><span class="perk-dot"></span> Custom HTML/CSS/JS, Shopify & React builds</li>
+              <li><span class="perk-dot"></span> Micro-animations & interactive stickers</li>
+              <li><span class="perk-dot"></span> Sub-second loads for impatient thumbs</li>
+            </ul>
+            <span class="vibe-badge">Zero cookie-cutter templates</span>
+          </div>
+        </article>
+
+        <!-- Service 2 -->
+        <article class="service-card card-pink tilt-card reveal" tabindex="0" role="button" aria-expanded="false" data-cursor="TAP / HOVER">
+          <div>
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">🎨</div>
+              <span class="flip-pill">Tap to unpack +</span>
+            </div>
+            <h3 class="service-title">Brand & UI/UX</h3>
+            <p class="service-teaser">Scroll-stopping hero sections and bold visual identities that command attention.</p>
+          </div>
+
+          <div class="service-drawer">
+            <ul class="perk-list">
+              <li><span class="perk-dot"></span> High-contrast typography & custom layouts</li>
+              <li><span class="perk-dot"></span> Conversion-engineered landing page systems</li>
+              <li><span class="perk-dot"></span> Mobile-first interactive prototypes</li>
+            </ul>
+            <span class="vibe-badge">Built for instant credibility</span>
+          </div>
+        </article>
+
+        <!-- Service 3 -->
+        <article class="service-card card-lime tilt-card reveal" tabindex="0" role="button" aria-expanded="false" data-cursor="TAP / HOVER">
+          <div>
+            <div class="service-top">
+              <div class="service-icon" aria-hidden="true">📈</div>
+              <span class="flip-pill">Tap to unpack +</span>
+            </div>
+            <h3 class="service-title">Digital Scaling</h3>
+            <p class="service-teaser">Local SEO dominance, conversion funnels & performance ads that print ROI.</p>
+          </div>
+
+          <div class="service-drawer">
+            <ul class="perk-list">
+              <li><span class="perk-dot"></span> WhatsApp & direct-booking lead pipelines</li>
+              <li><span class="perk-dot"></span> Search dominance so buyers find you first</li>
+              <li><span class="perk-dot"></span> Weekly A/B testing & growth experiments</li>
+            </ul>
+            <span class="vibe-badge">Full-funnel hype machine</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. WORK SECTION (Live Website Hero Previews) -->
+    <section class="work-section container" id="work">
+      <div class="section-header reveal">
+        <span class="section-tag" style="background: var(--violet);">Proof of Vibe</span>
+        <h2 class="section-title">Fresh out the <span class="serif-italic">studio.</span></h2>
+      </div>
+
+      <div class="web-subheading reveal">
+        <span>🌐 High-Energy Live Web Drops (Click any window to launch full site)</span>
+      </div>
+
+      <div class="web-grid">
+
+        <!-- 1. BIZSOULS -->
+        <a href="https://dubeyhardik.github.io/BIZSOULS-/bizsouls.html"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="browser-card tilt-card reveal"
+           data-cursor="VIEW SITE">
+
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span style="background: #FF5F56;"></span>
+              <span style="background: #FFBD2E;"></span>
+              <span style="background: #27C93F;"></span>
+            </div>
+            <span class="browser-url">dubeyhardik.github.io/BIZSOULS-</span>
+          </div>
+
+          <div class="hero-viewport">
+            <div class="hero-fallback fallback-bizsouls">
+              <span class="fallback-eyebrow">BIZSOULS PLATFORM</span>
+              <div class="fallback-heading">BIZSOULS — ELEVATE YOUR DIGITAL ECOSYSTEM</div>
+              <p class="fallback-sub">Interactive Hero Section Preview</p>
+            </div>
+            <iframe
+              class="hero-iframe"
+              src="https://dubeyhardik.github.io/BIZSOULS-/bizsouls.html"
+              title="Bizsouls Hero Section Preview"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"></iframe>
+            <span class="hero-live-badge">● Live Hero Preview</span>
+            <span class="hero-open-pill">Launch Site ↗</span>
+          </div>
+
+          <div class="browser-info info-bizsouls">
+            <div class="mockup-top-row">
+              <span class="mockup-pill">Brand & Web Experience</span>
+            </div>
+            <div>
+              <h3 class="mockup-title">BIZSOULS</h3>
+              <p class="mockup-stat">⚡ High-converting digital brand ecosystem & interactive showcase</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- 2. THE URBAN SPICE (Restaurant) -->
+        <a href="https://dubeyhardik.github.io/The-Urban-Spice/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="browser-card tilt-card reveal"
+           data-cursor="VIEW SITE">
+
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span style="background: #FF5F56;"></span>
+              <span style="background: #FFBD2E;"></span>
+              <span style="background: #27C93F;"></span>
+            </div>
+            <span class="browser-url">dubeyhardik.github.io/The-Urban-Spice</span>
+          </div>
+
+          <div class="hero-viewport">
+            <div class="hero-fallback fallback-urbanspice">
+              <span class="fallback-eyebrow">EST. 2019 • MULTI-CUISINE DINING</span>
+              <div class="fallback-heading">THE URBAN SPICE</div>
+              <p class="fallback-sub">Luxury Restaurant Hero & Instant WhatsApp Ordering</p>
+            </div>
+            <iframe
+              class="hero-iframe"
+              src="https://dubeyhardik.github.io/The-Urban-Spice/"
+              title="The Urban Spice Hero Section Preview"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"></iframe>
+            <span class="hero-live-badge">● Live Hero Preview</span>
+            <span class="hero-open-pill">Launch Site ↗</span>
+          </div>
+
+          <div class="browser-info info-urbanspice">
+            <div class="mockup-top-row">
+              <span class="mockup-pill">Restaurant</span>
+            </div>
+            <div>
+              <h3 class="mockup-title">URBAN SPICE</h3>
+              <p class="mockup-stat">🍽️ Luxury dining aesthetic with interactive menu & WhatsApp ordering</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- 3. HAVY TECHNOLOGIES (Business) -->
+        <a href="https://dubeyhardik.github.io/Havy-Technologies/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="browser-card tilt-card reveal"
+           data-cursor="VIEW SITE">
+
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span style="background: #FF5F56;"></span>
+              <span style="background: #FFBD2E;"></span>
+              <span style="background: #27C93F;"></span>
+            </div>
+            <span class="browser-url">dubeyhardik.github.io/Havy-Technologies</span>
+          </div>
+
+          <div class="hero-viewport">
+            <div class="hero-fallback fallback-havy">
+              <span class="fallback-eyebrow">LET'S HAVE IT FOR YOU</span>
+              <div class="fallback-heading">HAVY TECHNOLOGIES</div>
+              <p class="fallback-sub">Modern Business & Custom Engineering Studio</p>
+            </div>
+            <iframe
+              class="hero-iframe"
+              src="https://dubeyhardik.github.io/Havy-Technologies/"
+              title="Havy Technology Hero Section Preview"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"></iframe>
+            <span class="hero-live-badge">● Live Hero Preview</span>
+            <span class="hero-open-pill">Launch Site ↗</span>
+          </div>
+
+          <div class="browser-info info-havy">
+            <div class="mockup-top-row">
+              <span class="mockup-pill">Business</span>
+            </div>
+            <div>
+              <h3 class="mockup-title">HAVY TECHNOLOGY</h3>
+              <p class="mockup-stat">🚀 Scroll-driven agency showcase & high-speed lead generation</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- 4. DECODER CLASSES (Coaching) -->
+        <a href="https://dubeyhardik.github.io/Decoder-Classes/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="browser-card tilt-card reveal"
+           data-cursor="VIEW SITE">
+
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span style="background: #FF5F56;"></span>
+              <span style="background: #FFBD2E;"></span>
+              <span style="background: #27C93F;"></span>
+            </div>
+            <span class="browser-url">dubeyhardik.github.io/Decoder-Classes</span>
+          </div>
+
+          <div class="hero-viewport">
+            <div class="hero-fallback fallback-decoder">
+              <span class="fallback-eyebrow">PREMIER COACHING INSTITUTE</span>
+              <div class="fallback-heading">DECODER CLASSES</div>
+              <p class="fallback-sub">Student Enrollment & Course Showcase Portal</p>
+            </div>
+            <iframe
+              class="hero-iframe"
+              src="https://dubeyhardik.github.io/Decoder-Classes/"
+              title="Decoder Classes Hero Section Preview"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"></iframe>
+            <span class="hero-live-badge">● Live Hero Preview</span>
+            <span class="hero-open-pill">Launch Site ↗</span>
+          </div>
+
+          <div class="browser-info info-decoder">
+            <div class="mockup-top-row">
+              <span class="mockup-pill">Coaching</span>
+            </div>
+            <div>
+              <h3 class="mockup-title">DECODER CLASSES</h3>
+              <p class="mockup-stat">🎓 Student-first coaching portal built to boost batch enrollments</p>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- 4 & 5. DARK CONTRAST ZONE: RESULTS & HOW IT WORKS -->
+    <section class="dark-zone" id="results">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag" style="background: var(--lime); color: var(--ink);">The Receipts</span>
+          <h2 class="section-title">Numbers that make your <span class="serif-italic" style="color: var(--pink);">competitors</span> nervous.</h2>
+        </div>
+
+        <!-- 4. Results Counters -->
+        <div class="results-grid">
+          <div class="stat-card reveal">
+            <div class="stat-number">
+              <span class="counter" data-target="99">0</span>%
+            </div>
+            <div class="stat-label">Lighthouse Speed Score</div>
+          </div>
+
+          <div class="stat-card reveal">
+            <div class="stat-number">
+              <span class="counter" data-target="185">0</span>%
+            </div>
+            <div class="stat-label">Avg. Site Conversion Lift</div>
+          </div>
+
+          <div class="stat-card reveal">
+            <div class="stat-number">
+              <span class="counter" data-target="64">0</span>+
+            </div>
+            <div class="stat-label">Brands & Founders Scaled</div>
+          </div>
+
+          <div class="stat-card reveal">
+            <div class="stat-number">
+              <span class="counter" data-target="4">0</span>.6x
+            </div>
+            <div class="stat-label">Average Ad Spend Return</div>
+          </div>
+        </div>
+
+        <!-- 5. How It Works -->
+        <div class="section-header reveal">
+          <span class="section-tag" style="background: var(--cyan); color: var(--ink);">Zero Fluff Process</span>
+          <h2 class="section-title">How we <span class="serif-italic" style="color: var(--lime);">roll.</span></h2>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card tilt-card reveal">
+            <span class="step-sticker">STEP 01</span>
+            <h3>Vibe Check</h3>
+            <p>A quick 15-minute voice note or call. No 40-slide corporate decks—just your goals, your aesthetic, and what’s currently bottlenecking your brand.</p>
+          </div>
+
+          <div class="step-card tilt-card reveal">
+            <span class="step-sticker" style="background: var(--pink);">STEP 02</span>
+            <h3>The Cook-Up</h3>
+            <p>We jump into a shared WhatsApp or Discord group and start shipping fast—wireframes, custom hero sections, and copy you can react to in real time.</p>
+          </div>
+
+          <div class="step-card tilt-card reveal">
+            <span class="step-sticker" style="background: var(--ink); color: var(--lime);">STEP 03</span>
+            <h3>Drop & Scale</h3>
+            <p>We push your site live with sub-second load times and crank up the SEO & growth engine while tracking what makes people click buy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TESTIMONIALS SECTION -->
+    <section class="testimonials-section container">
+      <div class="carousel-Header reveal">
+        <div>
+          <span class="section-tag">Straight From The DMs</span>
+          <h2 class="section-title">Founders who <span class="serif-italic">fw</span> us.</h2>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prevChat" aria-label="Previous testimonial" data-cursor="PREV">←</button>
+          <button class="carousel-btn" id="nextChat" aria-label="Next testimonial" data-cursor="NEXT">→</button>
+        </div>
+      </div>
+
+      <div class="chat-carousel" id="chatCarousel" tabindex="0" aria-label="Client testimonials">
+        <div class="chat-card">
+          <div>
+            <div class="chat-meta">
+              <span>💬 iMessage • 2:14 PM</span>
+              <span>Delivered</span>
+            </div>
+            <p class="chat-quote">“Bro our store went from looking like a 2016 template to an actual cult brand. Online orders doubled the week we relaunched.”</p>
+          </div>
+          <div class="chat-author">
+            <div class="avatar">ZK</div>
+            <div class="author-info">
+              <strong>Zoya Khan, 23</strong>
+              <span>Founder @ GlowDrip Cosmetics</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-card">
+          <div>
+            <div class="chat-meta">
+              <span>📸 Instagram DM • Yesterday</span>
+              <span>Seen 🔥</span>
+            </div>
+            <p class="chat-quote">“Students and parents keep complimenting our new coaching portal. Inquiries on WhatsApp jumped 3x right after the new hero section went live.”</p>
+          </div>
+          <div class="chat-author">
+            <div class="avatar" style="background: var(--violet);">AK</div>
+            <div class="author-info">
+              <strong>Aman Verma, 27</strong>
+              <span>Director @ Apex Academy</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-card">
+          <div>
+            <div class="chat-meta">
+              <span>💚 WhatsApp • 11:08 AM</span>
+              <span>Pinned</span>
+            </div>
+            <p class="chat-quote">“Finally an agency that doesn't talk in boring buzzwords. They rebuilt our restaurant website AND set up direct table & food ordering. Best ROI ever.”</p>
+          </div>
+          <div class="chat-author">
+            <div class="avatar" style="background: var(--ink); color: var(--lime);">RD</div>
+            <div class="author-info">
+              <strong>Rohan & Dev, 25</strong>
+              <span>Co-founders @ Koko Hospitality</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-card">
+          <div>
+            <div class="chat-meta">
+              <span>💬 Discord • Today</span>
+              <span>Online ⚡</span>
+            </div>
+            <p class="chat-quote">“The custom animations on our site have people screen-recording and sharing it on Twitter for free. Literal cheat code.”</p>
+          </div>
+          <div class="chat-author">
+            <div class="avatar" style="background: var(--cyan); color: var(--ink);">SL</div>
+            <div class="author-info">
+              <strong>Sana Lee, 26</strong>
+              <span>Creative Director @ Neko Club</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FAQ SECTION -->
+    <section class="faq-section container" id="faq">
+      <div class="section-header reveal" style="text-align: center;">
+        <span class="section-tag">Quick Answers</span>
+        <h2 class="section-title">Got <span class="serif-italic">questions?</span></h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false" data-cursor="OPEN">
+            <span>Do I need a massive corporate budget to work with you?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-content-inner">
+              Nope. We built Kantama specifically for ambitious founders, local businesses, restaurants, and coaching institutes. We have starter packs for high-converting single landing pages, plus full-stack growth retainers when you're ready to scale hard.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false" data-cursor="OPEN">
+            <span>How fast do you deliver custom websites?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-content-inner">
+              High-converting landing pages go live in 5 to 7 days. Full multi-section custom websites take anywhere from 1 to 3 weeks depending on custom animations, interactive menus, and lead integrations.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false" data-cursor="OPEN">
+            <span>Will my website work smoothly on mobile phones?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-content-inner">
+              100%. Over 80% of your visitors are on their phones, so we design mobile-first with ultra-fast loading, thumb-friendly navigation, and one-tap WhatsApp or call actions.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger" aria-expanded="false" data-cursor="OPEN">
+            <span>Can I grab a Website first and add Digital Scaling later?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-content">
+            <div class="faq-content-inner">
+              Absolutely. Mix and match whatever you need right now. Start with a fresh website drop, and bolt on SEO + performance ads later when you want to pour fuel on the fire.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT SECTION -->
+    <section class="contact-section container" id="contact">
+      <div class="contact-box reveal">
+        <div>
+          <span class="section-tag" style="background: var(--lime); color: var(--ink);">No Formal Emails Needed</span>
+          <h2 class="section-title" style="color: #fff; margin-bottom: 16px;">Ready to upgrade your <span class="serif-italic" style="color: var(--lime);">brand?</span></h2>
+          <p style="font-weight: 700; font-size: 1.1rem; opacity: 0.95;">
+            Fill out the quick brief to send your project details straight to our WhatsApp, or tap below to chat directly.
+          </p>
+
+          <div class="quick-tap-group">
+            <a href="https://wa.me/919824160664?text=Yo%20Kantama%20Technologies!%20Let's%20build%20something%20crazy%20🚀" target="_blank" rel="noopener noreferrer" class="quick-btn btn-wa magnetic" id="directWaBtn" data-cursor="CHAT NOW">
+              <span>💬 One-Tap WhatsApp</span>
+              <span>Reply in ~10m →</span>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="quick-btn btn-ig magnetic" data-cursor="DM US">
+              <span>📸 Slide into our IG DMs</span>
+              <span>@kantama.studio →</span>
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form" id="projectForm">
+          <div class="form-group">
+            <label for="userName">Your Name / Brand</label>
+            <input type="text" id="userName" class="form-input" placeholder="e.g. Hardik (Urban Spice)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="userContact">Phone / WhatsApp # or Email</label>
+            <input type="text" id="userContact" class="form-input" placeholder="+91 98241... or email@brand.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>What are we cooking?</label>
+            <div class="vibe-selector">
+              <label class="vibe-chip">
+                <input type="checkbox" name="service" value="Custom Website" checked>
+                <span>💻 Custom Website</span>
+              </label>
+              <label class="vibe-chip">
+                <input type="checkbox" name="service" value="UI/UX & Branding">
+                <span>🎨 UI/UX & Branding</span>
+              </label>
+              <label class="vibe-chip">
+                <input type="checkbox" name="service" value="Growth & SEO">
+                <span>📈 Growth & SEO</span>
+              </label>
+              <label class="vibe-chip">
+                <input type="checkbox" name="service" value="The Whole Lot">
+                <span>🔥 The Whole Lot</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="userMsg">Spill the tea on your project</label>
+            <textarea id="userMsg" rows="3" class="form-input" placeholder="Need a new website for my restaurant / coaching / business..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-pink magnetic" style="width: 100%;" data-cursor="WHATSAPP">
+            Send on WhatsApp 💬⚡
+          </button>
+
+          <div class="form-feedback" id="formFeedback" role="status" aria-live="polite">
+            🎉 Redirecting to WhatsApp with your project details...
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- 9. FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <p style="font-weight: 800; font-size: 1.2rem; color: var(--lime);">Stalk us on the feed 👇</p>
+          <p style="opacity: 0.8; font-weight: 700;">Live web drops, UI roasts & behind-the-scenes.</p>
+        </div>
+        <div class="social-pills">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill" data-cursor="FOLLOW">Instagram ↗</a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-pill" data-cursor="CONNECT">LinkedIn ↗</a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-pill" data-cursor="CODE">GitHub ↗</a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-pill" data-cursor="LURK">X / Twitter ↗</a>
+        </div>
+      </div>
+
+      <div class="footer-giant">KANTAMA</div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Kantama Technologies. Zero corporate energy reserved.</span>
+        <span>Crafted with ❤ By TEAM DECODER⚡</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // WhatsApp Destination Number (Country code + number without '+')
+      const WHATSAPP_NUMBER = '919824160664';
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* -----------------------------------------------------------
+         1. MOBILE NAVIGATION DRAWER
+      ----------------------------------------------------------- */
+      const menuToggle = document.getElementById('menuToggle');
+      const menuToggleText = document.getElementById('menuToggleText');
+      const menuToggleIcon = document.getElementById('menuToggleIcon');
+      const mobileDrawer = document.getElementById('mobileNavDrawer');
+
+      function closeMobileMenu() {
+        if (!mobileDrawer || !menuToggle) return;
+        mobileDrawer.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggleText.textContent = 'Menu';
+        menuToggleIcon.textContent = '☰';
+      }
+
+      if (menuToggle && mobileDrawer) {
+        menuToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = mobileDrawer.classList.toggle('is-open');
+          menuToggle.setAttribute('aria-expanded', String(isOpen));
+          menuToggleText.textContent = isOpen ? 'Close' : 'Menu';
+          menuToggleIcon.textContent = isOpen ? '✕' : '☰';
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!mobileDrawer.contains(e.target) && !menuToggle.contains(e.target)) {
+            closeMobileMenu();
+          }
+        });
+      }
+
+      /* -----------------------------------------------------------
+         2. CUSTOM CURSOR
+      ----------------------------------------------------------- */
+      const cursor = document.getElementById('customCursor');
+      const cursorText = document.getElementById('cursorText');
+
+      if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        let mouseX = 0, mouseY = 0;
+        let curX = 0, curY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        function renderCursor() {
+          curX += (mouseX - curX) * 0.22;
+          curY += (mouseY - curY) * 0.22;
+          cursor.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
+          requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        document.querySelectorAll('[data-cursor]').forEach((el) => {
+          el.addEventListener('mouseenter', () => {
+            cursorText.textContent = el.getAttribute('data-cursor');
+            cursor.classList.add('is-active');
+          });
+          el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('is-active');
+          });
+        });
+      }
+
+      /* -----------------------------------------------------------
+         3. MAGNETIC BUTTONS & TILT CARDS
+      ----------------------------------------------------------- */
+      if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.magnetic').forEach((btn) => {
+          btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const x = (e.clientX - rect.left - rect.width / 2) * 0.28;
+            const y = (e.clientY - rect.top - rect.height / 2) * 0.28;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+          });
+          btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+          });
+        });
+
+        document.querySelectorAll('.tilt-card').forEach((card) => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const relX = (e.clientX - rect.left) / rect.width - 0.5;
+            const relY = (e.clientY - rect.top) / rect.height - 0.5;
+            const rotY = relX * 6;
+            const rotX = -relY * 6;
+            card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+          });
+        });
+      }
+
+      /* -----------------------------------------------------------
+         4. INTERACTIVE SERVICE CARDS (TAP / KEYBOARD EXPAND)
+      ----------------------------------------------------------- */
+      document.querySelectorAll('.service-card').forEach((card) => {
+        const pill = card.querySelector('.flip-pill');
+        function toggleCard() {
+          const isOpen = card.classList.toggle('is-open');
+          card.setAttribute('aria-expanded', isOpen);
+          if (pill) pill.textContent = isOpen ? 'Close -' : 'Tap to unpack +';
+        }
+        card.addEventListener('click', toggleCard);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleCard();
+          }
+        });
+      });
+
+      /* -----------------------------------------------------------
+         5. SCROLL REVEALS & ANIMATED NUMBER COUNTERS
+      ----------------------------------------------------------- */
+      const revealEls = document.querySelectorAll('.reveal');
+      const counterEls = document.querySelectorAll('.counter');
+
+      const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      revealEls.forEach((el) => revealObserver.observe(el));
+
+      const counterObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-target'), 10);
+
+          if (prefersReducedMotion) {
+            el.textContent = target;
+            obs.unobserve(el);
+            return;
+          }
+
+          const duration = 1400;
+          const startTime = performance.now();
+
+          function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.floor(eased * target);
+            if (progress < 1) {
+              requestAnimationFrame(tick);
+            } else {
+              el.textContent = target;
+            }
+          }
+          requestAnimationFrame(tick);
+          obs.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+
+      counterEls.forEach((el) => counterObserver.observe(el));
+
+      /* -----------------------------------------------------------
+         6. TESTIMONIAL CHAT CAROUSEL
+      ----------------------------------------------------------- */
+      const carousel = document.getElementById('chatCarousel');
+      const prevBtn = document.getElementById('prevChat');
+      const nextBtn = document.getElementById('nextChat');
+
+      if (carousel && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: -400, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+          carousel.scrollBy({ left: 400, behavior: 'smooth' });
+        });
+      }
+
+      /* -----------------------------------------------------------
+         7. SNAPPY FAQ ACCORDION
+      ----------------------------------------------------------- */
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach((item) => {
+        const trigger = item.querySelector('.faq-trigger');
+        const content = item.querySelector('.faq-content');
+
+        trigger.addEventListener('click', () => {
+          const isOpen = item.classList.contains('is-open');
+
+          faqItems.forEach((other) => {
+            other.classList.remove('is-open');
+            other.querySelector('.faq-trigger').setAttribute('aria-expanded', 'false');
+            other.querySelector('.faq-content').style.maxHeight = null;
+          });
+
+          if (!isOpen) {
+            item.classList.add('is-open');
+            trigger.setAttribute('aria-expanded', 'true');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      });
+
+      /* -----------------------------------------------------------
+         8. WHATSAPP CONTACT FORM INTEGRATION
+      ----------------------------------------------------------- */
+      const form = document.getElementById('projectForm');
+      const feedback = document.getElementById('formFeedback');
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById('userName').value.trim();
+          const contact = document.getElementById('userContact').value.trim();
+          const message = document.getElementById('userMsg').value.trim();
+
+          const selectedServices = Array.from(
+            form.querySelectorAll('input[name="service"]:checked')
+          ).map((cb) => cb.value);
+
+          const servicesList = selectedServices.length > 0
+            ? selectedServices.join(', ')
+            : 'Custom Project';
+
+          const waText = [
+            `⚡ *New Project Inquiry — Kantama Technologies* ⚡`,
+            ``,
+            `👤 *Name / Brand:* ${name}`,
+            `📞 *Contact:* ${contact}`,
+            `🛠️ *Services Needed:* ${servicesList}`,
+            `📝 *Project Brief:* ${message}`
+          ].join('\n');
+
+          const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`;
+
+          if (feedback) {
+            feedback.style.display = 'block';
+          }
+
+          window.open(waUrl, '_blank', 'noopener,noreferrer');
+          form.reset();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
