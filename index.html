@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kantama Technologies — Make Your Brand Impossible To Scroll Past</title>
+  <title>Kantama Tech — Make Your Brand Impossible To Scroll Past</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Plus+Jakarta+Sans:wght@500;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -138,7 +138,9 @@
       padding: 0 20px;
     }
 
-    /* Navigation */
+    /* =========================================
+       NAVIGATION & LOGO RESPONSIVE STYLES
+    ========================================= */
     header {
       position: sticky;
       top: 12px;
@@ -157,41 +159,49 @@
       backdrop-filter: blur(10px);
       border: var(--border);
       border-radius: 999px;
-      padding: 10px 14px 10px 16px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: var(--shadow);
-      gap: 8px;
+      gap: 10px;
     }
 
     .logo {
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: clamp(0.92rem, 3.5vw, 1.35rem);
       color: var(--ink);
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      flex-shrink: 1;
+      gap: 8px;
       min-width: 0;
+      flex-shrink: 1;
+    }
+
+    .logo-main {
+      font-size: clamp(0.95rem, 3.8vw, 1.35rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .logo-badge {
       background: var(--violet);
       color: var(--lime);
       border: 2px solid var(--ink);
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 8px;
-      transform: rotate(-3deg);
-      display: inline-block;
-      font-size: clamp(0.62rem, 2.3vw, 0.92rem);
-      letter-spacing: 0.02em;
-      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(0.58rem, 2.2vw, 0.85rem);
+      letter-spacing: 0.03em;
+      line-height: 1.1;
       white-space: nowrap;
       flex-shrink: 0;
+      transform: none;
     }
 
     .nav-links {
@@ -239,192 +249,6 @@
       box-shadow: 5px 5px 0px var(--ink);
     }
 
-    /* =========================================
-   MOBILE RESPONSIVE OVERLAP FIX
-========================================= */
-
-@media (max-width: 600px) {
-
-  /* NAVBAR FIX */
-  .navbar {
-    width: 100%;
-    padding: 8px 10px;
-    gap: 6px;
-    justify-content: space-between;
-  }
-
-  .logo {
-    flex: 1 1 auto;
-    min-width: 0;
-    gap: 4px;
-    overflow: hidden;
-  }
-
-  .logo > span:first-child {
-    font-size: clamp(0.75rem, 3.5vw, 1rem);
-    flex-shrink: 0;
-  }
-
-  .logo-badge {
-    font-size: clamp(0.48rem, 2vw, 0.68rem);
-    padding: 3px 5px;
-    flex-shrink: 1;
-    transform: none;
-    letter-spacing: 0;
-  }
-
-  .nav-actions {
-    flex-shrink: 0;
-  }
-
-  .menu-toggle {
-    padding: 7px 9px;
-    font-size: 0.68rem;
-    gap: 4px;
-  }
-
-
-  /* HERO SECTION FIX */
-
-  .hero {
-    padding: 42px 0 60px;
-  }
-
-  .hero-inner {
-    width: 100%;
-    padding: 0 14px;
-    overflow: hidden;
-  }
-
-  .hero-title {
-    width: 100%;
-    max-width: 100%;
-    font-size: clamp(2rem, 8vw, 3.2rem);
-    line-height: 1.05;
-    letter-spacing: -0.045em;
-    overflow-wrap: break-word;
-  }
-
-  .highlight-pill {
-    padding: 0 10px 4px;
-  }
-
-  .highlight-lime {
-    font-size: 0.78em;
-    padding: 3px 9px;
-    max-width: 100%;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height: 1.05;
-    letter-spacing: -0.05em;
-  }
-
-  .underline-wrap {
-    max-width: 100%;
-  }
-
-  .serif-italic {
-    font-size: 1em;
-  }
-
-
-  /* DESCRIPTION FIX */
-
-  .hero-sub {
-    width: 100%;
-    padding: 0 8px;
-    font-size: 1rem;
-    line-height: 1.65;
-  }
-
-
-  /* BUTTON FIX */
-
-  .hero-btns {
-    width: 100%;
-    padding: 0 10px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 18px;
-  }
-
-  .hero-btns .btn {
-    width: 100%;
-    padding: 15px 18px;
-    font-size: 1rem;
-  }
-
-
-  /* GENERAL HORIZONTAL OVERFLOW FIX */
-
-  html,
-  body {
-    max-width: 100%;
-    overflow-x: clip;
-  }
-
-  .container {
-    width: 100%;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-}
-
-
-/* EXTRA SMALL MOBILE DEVICES */
-
-@media (max-width: 360px) {
-
-  .logo-badge {
-    display: none;
-  }
-
-  .hero-title {
-    font-size: 1.9rem;
-  }
-
-  .eyebrow-sticker {
-    font-size: 0.68rem;
-    padding: 6px 10px;
-  }
-
-}
-
-    /* FIX: Mobile Navbar Logo Overlap */
-@media (max-width: 480px) {
-
-  .navbar {
-    padding: 8px 10px;
-    gap: 5px;
-  }
-
-  .logo {
-    gap: 4px;
-    font-size: clamp(0.78rem, 3.5vw, 1rem);
-    flex-shrink: 1;
-    min-width: 0;
-  }
-
-  .logo > span:first-child {
-    flex-shrink: 0;
-  }
-
-  .logo-badge {
-    font-size: clamp(0.52rem, 2.2vw, 0.68rem);
-    padding: 3px 5px;
-    flex-shrink: 1;
-    transform: rotate(-2deg);
-  }
-
-  .menu-toggle {
-    padding: 7px 9px;
-    font-size: 0.7rem;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-
-}
     /* Mobile Menu Toggle Button */
     .menu-toggle {
       display: inline-flex;
@@ -443,6 +267,7 @@
       cursor: pointer;
       text-transform: uppercase;
       transition: transform 0.15s ease, background-color 0.15s ease;
+      flex-shrink: 0;
     }
 
     .menu-toggle[aria-expanded="true"] {
@@ -545,12 +370,12 @@
         padding: 12px 22px;
       }
       .logo {
-        gap: 8px;
+        gap: 10px;
       }
       .logo-badge {
-        padding: 2px 9px;
+        padding: 3px 10px;
         border-radius: 10px;
-        transform: rotate(-5deg);
+        transform: rotate(-3deg);
       }
       .nav-links {
         display: flex;
@@ -784,6 +609,134 @@
         height: 40px;
         right: 4%;
         bottom: 2%;
+      }
+    }
+
+    /* =========================================
+       MOBILE RESPONSIVE OVERLAP FIXES
+    ========================================= */
+    @media (max-width: 600px) {
+      .navbar {
+        width: 100%;
+        padding: 8px 10px;
+        gap: 6px;
+      }
+
+      .logo {
+        gap: 6px;
+      }
+
+      .logo-main {
+        font-size: clamp(0.85rem, 4vw, 1.05rem);
+      }
+
+      .logo-badge {
+        font-size: clamp(0.52rem, 2.2vw, 0.68rem);
+        padding: 3px 6px;
+        border-radius: 6px;
+        transform: none;
+      }
+
+      .menu-toggle {
+        padding: 7px 10px;
+        font-size: 0.7rem;
+        gap: 4px;
+      }
+
+      /* HERO SECTION FIX */
+      .hero {
+        padding: 42px 0 60px;
+      }
+
+      .hero-inner {
+        width: 100%;
+        padding: 0 14px;
+        overflow: hidden;
+      }
+
+      .hero-title {
+        width: 100%;
+        max-width: 100%;
+        font-size: clamp(2rem, 8vw, 3.2rem);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+        overflow-wrap: break-word;
+      }
+
+      .highlight-pill {
+        padding: 0 10px 4px;
+      }
+
+      .highlight-lime {
+        font-size: 0.82em;
+        padding: 3px 10px;
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .underline-wrap {
+        max-width: 100%;
+      }
+
+      .serif-italic {
+        font-size: 1em;
+      }
+
+      .hero-sub {
+        width: 100%;
+        padding: 0 8px;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .hero-btns {
+        width: 100%;
+        padding: 0 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+      }
+
+      .hero-btns .btn {
+        width: 100%;
+        padding: 15px 18px;
+        font-size: 1rem;
+      }
+
+      html,
+      body {
+        max-width: 100%;
+        overflow-x: clip;
+      }
+
+      .container {
+        width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+
+    /* EXTRA SMALL MOBILE DEVICES */
+    @media (max-width: 370px) {
+      .logo {
+        gap: 4px;
+      }
+      .logo-main {
+        font-size: 0.82rem;
+      }
+      .logo-badge {
+        font-size: 0.48rem;
+        padding: 2px 5px;
+      }
+      .hero-title {
+        font-size: 1.9rem;
+      }
+      .eyebrow-sticker {
+        font-size: 0.68rem;
+        padding: 6px 10px;
       }
     }
 
@@ -1778,7 +1731,6 @@
       transform: translateY(-3px);
     }
 
-    /* Fixed Responsive Giant Footer Wordmark — Never Clips on Mobile */
     .footer-giant {
       width: 100%;
       font-family: var(--font-display);
@@ -1853,8 +1805,8 @@
     <div class="nav-wrapper">
       <nav class="navbar" aria-label="Main Navigation">
         <a href="#" class="logo" data-cursor="HOME">
-          <span>KANTAMA</span>
-          <span class="logo-badge">TECHNOLOGIES</span>
+          <span class="logo-main">KANTAMA</span>
+          <span class="logo-badge">TECH</span>
         </a>
 
         <ul class="nav-links">
@@ -2427,7 +2379,7 @@
           </p>
 
           <div class="quick-tap-group">
-            <a href="https://wa.me/919824160664?text=Yo%20Kantama%20Technologies!%20Let's%20build%20something%20crazy%20🚀" target="_blank" rel="noopener noreferrer" class="quick-btn btn-wa magnetic" id="directWaBtn" data-cursor="CHAT NOW">
+            <a href="https://wa.me/919824160664?text=Yo%20Kantama%20Tech!%20Let's%20build%20something%20crazy%20🚀" target="_blank" rel="noopener noreferrer" class="quick-btn btn-wa magnetic" id="directWaBtn" data-cursor="CHAT NOW">
               <span>💬 One-Tap WhatsApp</span>
               <span>Reply in ~10m →</span>
             </a>
@@ -2507,7 +2459,7 @@
       <div class="footer-giant">KANTAMA</div>
 
       <div class="footer-bottom">
-        <span>© 2026 Kantama Technologies. Zero corporate energy reserved.</span>
+        <span>© 2026 Kantama Tech. Zero corporate energy reserved.</span>
         <span>Crafted with ❤ By TEAM DECODER⚡</span>
       </div>
     </div>
@@ -2753,7 +2705,7 @@
             : 'Custom Project';
 
           const waText = [
-            `⚡ *New Project Inquiry — Kantama Technologies* ⚡`,
+            `⚡ *New Project Inquiry — Kantama Tech* ⚡`,
             ``,
             `👤 *Name / Brand:* ${name}`,
             `📞 *Contact:* ${contact}`,
