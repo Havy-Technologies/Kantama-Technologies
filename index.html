@@ -239,8 +239,159 @@
       box-shadow: 5px 5px 0px var(--ink);
     }
 
-    
-/* FIX: Mobile Navbar Logo Overlap */
+    /* =========================================
+   MOBILE RESPONSIVE OVERLAP FIX
+========================================= */
+
+@media (max-width: 600px) {
+
+  /* NAVBAR FIX */
+  .navbar {
+    width: 100%;
+    padding: 8px 10px;
+    gap: 6px;
+    justify-content: space-between;
+  }
+
+  .logo {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .logo > span:first-child {
+    font-size: clamp(0.75rem, 3.5vw, 1rem);
+    flex-shrink: 0;
+  }
+
+  .logo-badge {
+    font-size: clamp(0.48rem, 2vw, 0.68rem);
+    padding: 3px 5px;
+    flex-shrink: 1;
+    transform: none;
+    letter-spacing: 0;
+  }
+
+  .nav-actions {
+    flex-shrink: 0;
+  }
+
+  .menu-toggle {
+    padding: 7px 9px;
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+
+
+  /* HERO SECTION FIX */
+
+  .hero {
+    padding: 42px 0 60px;
+  }
+
+  .hero-inner {
+    width: 100%;
+    padding: 0 14px;
+    overflow: hidden;
+  }
+
+  .hero-title {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    overflow-wrap: break-word;
+  }
+
+  .highlight-pill {
+    padding: 0 10px 4px;
+  }
+
+  .highlight-lime {
+    font-size: 0.78em;
+    padding: 3px 9px;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+  }
+
+  .underline-wrap {
+    max-width: 100%;
+  }
+
+  .serif-italic {
+    font-size: 1em;
+  }
+
+
+  /* DESCRIPTION FIX */
+
+  .hero-sub {
+    width: 100%;
+    padding: 0 8px;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+
+  /* BUTTON FIX */
+
+  .hero-btns {
+    width: 100%;
+    padding: 0 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .hero-btns .btn {
+    width: 100%;
+    padding: 15px 18px;
+    font-size: 1rem;
+  }
+
+
+  /* GENERAL HORIZONTAL OVERFLOW FIX */
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .container {
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+}
+
+
+/* EXTRA SMALL MOBILE DEVICES */
+
+@media (max-width: 360px) {
+
+  .logo-badge {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .eyebrow-sticker {
+    font-size: 0.68rem;
+    padding: 6px 10px;
+  }
+
+}
+
+    /* FIX: Mobile Navbar Logo Overlap */
 @media (max-width: 480px) {
 
   .navbar {
